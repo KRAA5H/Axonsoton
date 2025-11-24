@@ -6,6 +6,20 @@
     <title>Patient Recovery Dashboard - Axonsoton</title>
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Fallback check for Chart.js
+        window.addEventListener('load', function() {
+            if (typeof Chart === 'undefined') {
+                document.querySelectorAll('canvas').forEach(function(canvas) {
+                    var fallback = document.createElement('div');
+                    fallback.className = 'chart-fallback';
+                    fallback.innerHTML = '<p style="text-align: center; padding: 40px; color: #636e72;">📊 Chart visualization requires Chart.js library</p>';
+                    canvas.parentNode.insertBefore(fallback, canvas);
+                    canvas.style.display = 'none';
+                });
+            }
+        });
+    </script>
 </head>
 <body>
     <header class="main-header">
