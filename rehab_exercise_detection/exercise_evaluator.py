@@ -7,7 +7,7 @@ High-level interface for evaluating rehabilitation exercises.
 import cv2
 import time
 import numpy as np
-from typing import Optional, Dict, Any, List, Callable
+from typing import Optional, Dict, Any, List, Callable, Tuple
 from dataclasses import dataclass
 from enum import Enum
 
@@ -103,7 +103,7 @@ class RepetitionTracker:
         self._baseline_angle = 0.0
         self._rep_count = 0
     
-    def update(self, angle: float) -> tuple[bool, bool]:
+    def update(self, angle: float) -> Tuple[bool, bool]:
         """
         Update tracker with new angle reading.
         

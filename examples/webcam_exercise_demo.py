@@ -8,7 +8,7 @@ to evaluate shoulder flexion exercises in real-time using a webcam.
 Usage:
     python webcam_exercise_demo.py
     
-Press 'q' to quit, 's' to switch exercises, 'r' to reset session.
+Press 'q' to quit, 's' to switch exercises, 'x' to reset session.
 """
 
 import cv2
@@ -35,7 +35,7 @@ def main():
     print("\nControls:")
     print("  q - Quit")
     print("  s - Switch exercise")
-    print("  r - Reset session")
+    print("  x - Reset session")
     print("  l/r - Switch to left/right side")
     print("\n")
     
@@ -121,7 +121,7 @@ def main():
             # Add instructions
             cv2.putText(
                 annotated_frame,
-                "q:Quit | s:Switch Exercise | r:Reset | l/r:Change Side",
+                "q:Quit | s:Switch Exercise | x:Reset | l/r:Change Side",
                 (10, annotated_frame.shape[0] - 10),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 200), 1
             )
@@ -138,7 +138,7 @@ def main():
                 # Switch to next exercise
                 current_exercise_idx = (current_exercise_idx + 1) % len(exercises)
                 set_current_exercise()
-            elif key == ord('r'):
+            elif key == ord('x'):
                 # Reset current session
                 evaluator.reset()
                 evaluator.start_session()
