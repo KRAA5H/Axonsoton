@@ -213,7 +213,7 @@ class Database:
             return user
         return None
     
-    def get_all_users(self) -> list[User]:
+    def get_all_users(self) -> 'list[User]':
         """Retrieve all users from the database.
         
         Returns:

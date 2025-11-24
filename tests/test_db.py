@@ -242,9 +242,9 @@ class TestDatabase(unittest.TestCase):
     
     def test_get_all_users(self):
         """Test retrieving all users."""
-        user1 = User.create("user1", "user1@example.com", "password1")
-        user2 = User.create("user2", "user2@example.com", "password2")
-        user3 = User.create("user3", "user3@example.com", "password3")
+        user1 = User.create(username="user1", email="user1@example.com", password="password1")
+        user2 = User.create(username="user2", email="user2@example.com", password="password2")
+        user3 = User.create(username="user3", email="user3@example.com", password="password3")
         
         self.db.create_user(user1)
         self.db.create_user(user2)
