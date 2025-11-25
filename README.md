@@ -1,174 +1,77 @@
-# Rehab Exercise Detection System
+# Axonsoton - Rehabilitation Exercise Management System
 
-https://ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer
+A comprehensive system for managing and tracking rehabilitation exercises, combining a web-based assignment platform for GPs and patients with real-time exercise detection using AI.
 
-## User Login Database
+![Patient Dashboard](https://github.com/user-attachments/assets/f9e74a9e-8c95-4a9b-a9a9-4cc9b4653687)
+![GP Dashboard](https://github.com/user-attachments/assets/ae70c838-b3c5-4984-b02b-12ea80e26a28)
 
-A SQLite-based database module for storing and managing user login details with secure password hashing.
+## 🚀 Quick Start
 
-### Features
+**Want to get started immediately?** See **[SETUP.md](SETUP.md)** for complete installation and usage instructions.
 
-- **Secure Password Storage**: Uses bcrypt for secure password hashing
-- **User Management**: Full CRUD operations (Create, Read, Update, Delete)
-- **User Authentication**: Verify user credentials with username and password
-- **SQLite Database**: Lightweight, file-based database requiring no external server
-- **Duplicate Prevention**: Enforces unique usernames and email addresses
+```bash
+# 1. Install Node.js dependencies
+npm install
 
-### Installation
-A Python-based system that uses MediaPipe to detect whether a patient is correctly performing rehabilitation exercises used to cure/improve gross motor disorders.
+# 2. Install Python dependencies
+pip install -r requirements.txt
+
+# 3. Start the web application
+npm start
+
+# 4. Open browser to http://localhost:3000
+```
+
+## Overview
+
+Axonsoton is a dual-component rehabilitation system designed to improve patient outcomes:
+
+### 1. Web Application (GP & Patient Portal)
+
+A user-friendly platform where:
+- **GPs** can assign customized exercises to patients with specific parameters
+- **Patients** can view, track, and complete their personalized exercise plans
+
+### 2. Exercise Detection System (AI-Powered Tracking)
+
+A Python-based system using MediaPipe that:
+- Provides real-time feedback on exercise form and technique
+- Automatically counts repetitions
+- Scores performance quality
+- Tracks patient progress during exercise sessions
 
 ## Features
 
+### For General Practitioners (GPs)
+- 👥 View all patients in their practice
+- 📋 Assign customized exercises to patients
+- ⚙️ Set exercise parameters (frequency, repetitions, sets, duration)
+- 📝 Add personalized notes and instructions
+- 📊 Track patient progress and adherence
+- ✏️ Manage and update exercise assignments
+
+### For Patients
+- 📱 View assigned exercises from their GP
+- 📖 See detailed exercise instructions
+- ✅ Mark exercises as complete
+- 📈 Track exercise history and statistics
+- 💬 Access personalized notes from their GP
+- 🎥 Perform exercises with real-time AI feedback (via webcam demo)
+
+### Exercise Detection Capabilities
 - **Real-time pose detection** using MediaPipe Pose
-- **Multiple exercise support**:
-  - Shoulder Flexion
-  - Shoulder Abduction
-  - Elbow Flexion
-  - Knee Flexion
-  - Hip Flexion
-  - Hip Abduction
 - **Accurate angle measurement** for joint positions
-- **Real-time feedback** with quality scoring
-- **Repetition tracking** with session management
-- **Customizable exercise parameters** (target angles, tolerance, etc.)
-- **Support for both webcam and video file analysis**
-
-## Installation
-
-### Requirements
-
-- Python 3.8 or higher
-- Webcam (for real-time detection)
-
-### Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Usage
-
-```python
-from database import Database, User
-
-# Initialize the database
-db = Database("users.db")
-
-# Create a new user
-user = User.create(
-    username="john_doe",
-    email="john@example.com",
-    password="securepassword123"
-)
-created_user = db.create_user(user)
-
-# Authenticate a user
-authenticated = db.authenticate_user("john_doe", "securepassword123")
-if authenticated:
-    print(f"Welcome, {authenticated.username}!")
-
-# Get user by username or email
-user = db.get_user_by_username("john_doe")
-user = db.get_user_by_email("john@example.com")
-
-# Update user details
-user.email = "newemail@example.com"
-db.update_user(user)
-
-# Delete a user
-db.delete_user(user.id)
-
-# Get all users
-all_users = db.get_all_users()
-```
-
-### Database Schema
-
-The `users` table includes:
-- `id`: Auto-incrementing primary key
-- `username`: Unique username (indexed)
-- `email`: Unique email address (indexed)
-- `password_hash`: Bcrypt-hashed password
-- `created_at`: Timestamp of user creation
-- `updated_at`: Timestamp of last update
-
-### Running Tests
-
-```bash
-python -m unittest discover -s tests -v
-```
-Or install the package directly:
-
-```bash
-pip install -e .
-```
-
-## Quick Start
-
-### Basic Usage
-
-```python
-from rehab_exercise_detection import (
-    ExerciseEvaluator,
-    ExerciseConfig,
-    ShoulderFlexion
-)
-
-# Create an exercise with custom configuration
-config = ExerciseConfig(
-    target_angle=90.0,    # Target 90 degrees
-    tolerance=15.0,       # ±15 degrees acceptable
-    side='left'           # Evaluate left arm
-)
-
-# Create the evaluator
-evaluator = ExerciseEvaluator(target_reps=10)
-evaluator.set_exercise_by_name('shoulder_flexion', config)
-
-# Start a session
-evaluator.start_session()
-
-# Process video frames (example with OpenCV)
-import cv2
-cap = cv2.VideoCapture(0)  # Use webcam
-
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
-    
-    # Evaluate the frame
-    feedback = evaluator.evaluate_frame(frame)
-    
-    # Draw feedback overlay
-    annotated = evaluator.draw_feedback(frame, feedback)
-    
-    # Display
-    cv2.imshow('Exercise Detection', annotated)
-    
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-cap.release()
-cv2.destroyAllWindows()
-```
-
-### Run the Webcam Demo
-
-```bash
-python examples/webcam_exercise_demo.py
-```
-
-### Analyze a Video File
-
-```bash
-python examples/video_analysis.py input_video.mp4 --exercise shoulder_flexion
-```
+- **Instant feedback** with quality scoring (0-100)
+- **Automatic repetition counting**
+- **Session management and summaries**
+- **Customizable parameters** (target angles, tolerance levels)
+- **Support for webcam and video file analysis**
 
 ## Supported Exercises
 
-### Upper Body
+The system supports six rehabilitation exercises:
 
+### Upper Body
 | Exercise | Description | Default Target |
 |----------|-------------|----------------|
 | Shoulder Flexion | Raise arm forward and upward | 90° |
@@ -176,94 +79,131 @@ python examples/video_analysis.py input_video.mp4 --exercise shoulder_flexion
 | Elbow Flexion | Bend elbow | 140° |
 
 ### Lower Body
-
 | Exercise | Description | Default Target |
 |----------|-------------|----------------|
 | Knee Flexion | Bend knee | 90° |
 | Hip Flexion | Raise thigh forward | 90° |
 | Hip Abduction | Move leg sideways | 30° |
 
-## API Reference
+## How to Run the Complete System
 
-### ExerciseEvaluator
+### Step 1: Start the Web Application
 
-The main class for evaluating exercises:
-
-```python
-evaluator = ExerciseEvaluator(target_reps=10)
-
-# Set exercise by name
-evaluator.set_exercise_by_name('shoulder_flexion', config)
-
-# Or set exercise directly
-evaluator.set_exercise(ShoulderFlexion(config))
-
-# Start a session
-evaluator.start_session()
-
-# Evaluate a frame
-feedback = evaluator.evaluate_frame(frame)
-
-# Get session summary
-summary = evaluator.get_session_summary()
+```bash
+npm start
 ```
 
-### ExerciseFeedback
+The server will start on port 3000. Open http://localhost:3000 in your browser.
 
-Feedback object returned from evaluation:
+### Step 2: Login
 
-```python
-feedback.is_correct      # bool: Whether position is correct
-feedback.level           # FeedbackLevel: EXCELLENT, GOOD, NEEDS_IMPROVEMENT, INCORRECT, ERROR
-feedback.score           # float: 0-100 score
-feedback.current_angle   # float: Current measured angle
-feedback.target_angle    # float: Target angle
-feedback.messages        # List[str]: Feedback messages
-feedback.corrections     # List[str]: Suggested corrections
+**Demo users are pre-loaded:**
+
+**GPs:**
+- Dr. Sarah Smith (dr.smith@hospital.com)
+- Dr. Michael Jones (dr.jones@hospital.com)
+
+**Patients:**
+- John Doe (john.doe@email.com)
+- Jane Wilson (jane.wilson@email.com)
+- Bob Brown (bob.brown@email.com)
+
+Click on any user to login (password: password123 for all demo users).
+
+### Step 3: Use the Application
+
+**As a GP:**
+1. Click on a GP user to login
+2. View your patients on the dashboard
+3. Select a patient and exercise from the dropdowns
+4. Set exercise parameters (frequency, reps, sets)
+5. Add any special instructions in the notes field
+6. Click "Assign Exercise"
+
+**As a Patient:**
+1. Click on a patient user to login
+2. View your assigned exercises
+3. Read the instructions provided
+4. Mark exercises as complete after finishing them
+5. For real-time tracking, use the exercise detection system (see below)
+
+### Step 4: Use Exercise Detection (Optional)
+
+For patients who want real-time feedback while performing exercises:
+
+```bash
+python examples/webcam_exercise_demo.py
 ```
 
-### ExerciseConfig
-
-Configuration for exercises:
-
-```python
-config = ExerciseConfig(
-    target_angle=90.0,     # Target angle in degrees
-    tolerance=15.0,        # Acceptable deviation
-    min_angle=0.0,         # Minimum angle (for range-based)
-    max_angle=180.0,       # Maximum angle (for range-based)
-    hold_duration=0.0,     # Required hold time in seconds
-    repetitions=1,         # Target repetitions
-    side='left',           # 'left' or 'right'
-    use_3d=False           # Use 3D angle calculation
-)
-```
-
-## Architecture
-
-```
-rehab_exercise_detection/
-├── __init__.py              # Package exports
-├── pose_detector.py         # MediaPipe pose detection wrapper
-├── angle_calculator.py      # Joint angle calculations
-├── exercises.py             # Exercise definitions
-├── exercise_evaluator.py    # High-level evaluation logic
-└── feedback.py              # Feedback generation
-```
+**Controls:**
+- `q` - Quit
+- `s` - Switch exercise
+- `x` - Reset session
+- `l/r` - Switch to left/right side
 
 ## Testing
 
-Run the tests:
-
+### Test the Web Application
 ```bash
-pytest tests/ -v
+npm test
 ```
 
-## References
+### Test the Exercise Detection System
+```bash
+python -m unittest discover -s tests -p "test_*.py" -v
+```
 
-- [MediaPipe Pose](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker)
-- [MediaPipe Gesture Recognizer](https://ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer)
-- [Project Documentation](https://docs.google.com/document/d/1nP6FtXBxIDLaF_Th2AUVDnthiqoOZYtdLUcuB1-zIUk/edit?usp=sharing)
+## Project Structure
+
+```
+Axonsoton/
+├── src/                          # Node.js backend
+│   ├── app.js                    # Main Express application
+│   ├── routes/                   # API endpoints
+│   ├── controllers/              # Business logic
+│   ├── models/                   # Data models
+│   ├── middleware/               # Authentication
+│   └── data/                     # In-memory data store
+├── public/                       # Frontend files
+│   ├── index.html                # Single-page application
+│   ├── css/styles.css            # Styling
+│   └── js/app.js                 # Frontend JavaScript
+├── rehab_exercise_detection/    # Python exercise detection
+│   ├── pose_detector.py          # MediaPipe integration
+│   ├── angle_calculator.py       # Angle calculations
+│   ├── exercises.py              # Exercise definitions
+│   └── exercise_evaluator.py    # Main evaluation logic
+├── examples/                     # Python examples
+│   ├── webcam_exercise_demo.py   # Webcam demo
+│   └── video_analysis.py         # Video analysis
+├── tests/                        # Test files
+├── SETUP.md                      # Detailed setup guide
+├── package.json                  # Node.js dependencies
+└── requirements.txt              # Python dependencies
+```
+
+## Documentation
+
+- **[SETUP.md](SETUP.md)** - Complete installation and setup guide
+- **[Project Documentation](https://docs.google.com/document/d/1nP6FtXBxIDLaF_Th2AUVDnthiqoOZYtdLUcuB1-zIUk/edit?usp=sharing)** - Detailed project documentation
+- **[MediaPipe Pose](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker)** - MediaPipe documentation
+
+## Technology Stack
+
+**Backend:**
+- Node.js with Express
+- In-memory data storage (ready for database integration)
+
+**Frontend:**
+- Vanilla JavaScript
+- HTML5 & CSS3
+- Chart.js for visualizations
+
+**Exercise Detection:**
+- Python 3.8+
+- MediaPipe Pose
+- OpenCV for video processing
+- NumPy for calculations
 
 ## License
 
