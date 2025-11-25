@@ -524,7 +524,8 @@ async function loadPatientExercises() {
         
         ${assignment.status === 'active' ? `
         <div class="card-actions">
-          <button class="btn btn-success btn-small" onclick="markComplete('${assignment.id}')">Mark Complete</button>
+          <button class="btn btn-primary btn-small" onclick="showExerciseGuide('${assignment.exercise ? assignment.exercise.name : ''}')">🎥 Start with Tracking</button>
+          <button class="btn btn-success btn-small" onclick="markComplete('${assignment.id}')">✓ Mark Complete</button>
         </div>
         ` : ''}
       `;
@@ -556,6 +557,31 @@ async function markComplete(assignmentId) {
     console.error('Error marking complete:', error);
     alert('An error occurred');
   }
+}
+
+/**
+ * Show exercise guide for starting exercise with tracking
+ */
+function showExerciseGuide(exerciseName) {
+  const guide = `
+How to perform "${exerciseName}" with real-time tracking:
+
+1. Open a terminal/command prompt
+2. Navigate to the Axonsoton directory
+3. Run: python examples/webcam_exercise_demo.py
+4. Press 's' to switch to "${exerciseName}"
+5. Follow the on-screen feedback
+
+The system will:
+• Track your movements in real-time
+• Count repetitions automatically
+• Provide form feedback
+• Score your performance
+
+See SETUP.md for more details.
+  `.trim();
+  
+  alert(guide);
 }
 
 // ====== Utility Functions ======
