@@ -564,12 +564,12 @@ async function markComplete(assignmentId) {
  */
 function showExerciseGuide(exerciseName) {
   const guide = `
-To perform this exercise with real-time tracking and feedback:
+How to perform "${exerciseName}" with real-time tracking:
 
 1. Open a terminal/command prompt
 2. Navigate to the Axonsoton directory
 3. Run: python examples/webcam_exercise_demo.py
-4. Press 's' to switch to the correct exercise
+4. Press 's' to switch to "${exerciseName}"
 5. Follow the on-screen feedback
 
 The system will:
