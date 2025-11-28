@@ -17,7 +17,7 @@ This guide provides step-by-step instructions to set up and run the complete Axo
 Before you begin, ensure you have the following installed:
 
 - **Node.js** (version 14 or higher) - [Download](https://nodejs.org/)
-- **Python** (version 3.8 or higher) - [Download](https://www.python.org/)
+- **Python 3.12** - [Download](https://www.python.org/downloads/release/python-3120/)
 - **npm** (comes with Node.js)
 - **pip** (comes with Python)
 - **Webcam** (optional, for real-time exercise detection)
@@ -26,7 +26,7 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 node --version    # Should show v14.x or higher
-python3 --version # Should show Python 3.8 or higher
+python3.12 --version # Should show Python 3.12.x
 npm --version     # Should show 6.x or higher
 pip --version     # Should show pip version
 ```
@@ -40,7 +40,27 @@ git clone https://github.com/KRAA5H/Axonsoton.git
 cd Axonsoton
 ```
 
-### Step 2: Install Node.js Dependencies
+### Step 2: Create Python Virtual Environment
+
+Create a virtual environment using Python 3.12:
+
+```bash
+python3.12 -m venv venv
+```
+
+Activate the virtual environment:
+
+**On Linux/Mac:**
+```bash
+source venv/bin/activate
+```
+
+**On Windows:**
+```bash
+venv\Scripts\activate
+```
+
+### Step 3: Install Node.js Dependencies
 
 ```bash
 npm install
@@ -48,7 +68,9 @@ npm install
 
 This installs the required packages for the web application (Express, CORS, body-parser, etc.).
 
-### Step 3: Install Python Dependencies
+### Step 4: Install Python Dependencies
+
+With the virtual environment activated, install the required Python packages:
 
 ```bash
 pip install -r requirements.txt

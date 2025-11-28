@@ -13,13 +13,18 @@ A comprehensive system for managing and tracking rehabilitation exercises, combi
 # 1. Install Node.js dependencies
 npm install
 
-# 2. Install Python dependencies
+# 2. Create Python 3.12 virtual environment
+python3.12 -m venv venv
+source venv/bin/activate  # On Linux/Mac
+# venv\Scripts\activate   # On Windows
+
+# 3. Install Python dependencies
 pip install -r requirements.txt
 
-# 3. Start the web application
+# 4. Start the web application
 npm start
 
-# 4. Open browser to http://localhost:3000
+# 5. Open browser to http://localhost:3000
 ```
 
 ## Overview
@@ -200,7 +205,7 @@ Axonsoton/
 - Chart.js for visualizations
 
 **Exercise Detection:**
-- Python 3.8+
+- Python 3.12
 - MediaPipe Pose
 - OpenCV for video processing
 - NumPy for calculations
