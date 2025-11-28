@@ -1,0 +1,19 @@
+{
+  "name": "axonsoton",
+  "version": "1.0.0",
+  "description": "Exercise Assignment System for GPs and Patients",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "node --test tests/"
+  },
+  "keywords": ["healthcare", "exercise", "gp", "patient"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "uuid": "^10.0.0"
+  }
+}

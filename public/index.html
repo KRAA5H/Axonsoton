@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axonsoton - Exercise Assignment System</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Login View -->
+    <div id="login-view" class="view">
+      <div class="container">
+        <h1>Axonsoton</h1>
+        <h2>Exercise Assignment System</h2>
+        <div class="card login-card">
+          <h3>Select User to Login</h3>
+          <p class="hint">For demo purposes, select a user below:</p>
+          
+          <div id="user-list-container">
+            <h4>GPs (General Practitioners)</h4>
+            <div id="gp-list" class="user-list"></div>
+            
+            <h4>Patients</h4>
+            <div id="patient-list" class="user-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GP Dashboard View -->
+    <div id="gp-view" class="view hidden">
+      <header>
+        <div class="header-content">
+          <h1>GP Dashboard</h1>
+          <div class="user-info">
+            <span id="gp-user-name"></span>
+            <button id="gp-logout" class="btn btn-secondary">Logout</button>
+          </div>
+        </div>
+      </header>
+      
+      <div class="container">
+        <div class="dashboard-grid">
+          <!-- Patient Selection -->
+          <section class="card">
+            <h3>Patients</h3>
+            <div id="gp-patient-list" class="patient-grid"></div>
+          </section>
+          
+          <!-- Exercise Assignment Form -->
+          <section class="card">
+            <h3>Assign Exercise</h3>
+            <form id="assignment-form">
+              <div class="form-group">
+                <label for="select-patient">Select Patient</label>
+                <select id="select-patient" required>
+                  <option value="">Choose a patient...</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="select-exercise">Select Exercise</label>
+                <select id="select-exercise" required>
+                  <option value="">Choose an exercise...</option>
+                </select>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="frequency">Frequency</label>
+                  <select id="frequency">
+                    <option value="daily">Daily</option>
+                    <option value="twice_weekly">Twice Weekly</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="repetitions">Repetitions</label>
+                  <input type="number" id="repetitions" value="10" min="1">
+                </div>
+                
+                <div class="form-group">
+                  <label for="sets">Sets</label>
+                  <input type="number" id="sets" value="3" min="1">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="duration">Duration (minutes, optional)</label>
+                <input type="number" id="duration" min="1" placeholder="Leave empty if not applicable">
+              </div>
+              
+              <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea id="notes" rows="3" placeholder="Instructions or special notes for the patient..."></textarea>
+              </div>
+              
+              <button type="submit" class="btn btn-primary">Assign Exercise</button>
+            </form>
+          </section>
+          
+          <!-- Current Assignments -->
+          <section class="card full-width">
+            <h3>Current Assignments</h3>
+            <div class="table-container">
+              <table id="assignments-table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Exercise</th>
+                    <th>Frequency</th>
+                    <th>Reps x Sets</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="assignments-tbody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Patient Dashboard View -->
+    <div id="patient-view" class="view hidden">
+      <header>
+        <div class="header-content">
+          <h1>My Exercise Plan</h1>
+          <div class="user-info">
+            <span id="patient-user-name"></span>
+            <button id="patient-logout" class="btn btn-secondary">Logout</button>
+          </div>
+        </div>
+      </header>
+      
+      <div class="container">
+        <!-- Summary Cards -->
+        <div class="summary-cards" id="patient-summary">
+          <div class="summary-card">
+            <span class="summary-number" id="total-exercises">0</span>
+            <span class="summary-label">Total Exercises</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-number" id="active-exercises">0</span>
+            <span class="summary-label">Active</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-number" id="completed-exercises">0</span>
+            <span class="summary-label">Completed</span>
+          </div>
+        </div>
+        
+        <!-- Exercise Tracking Info -->
+        <div class="info-banner">
+          <div class="info-icon">🎥</div>
+          <div class="info-content">
+            <h4>Real-time Exercise Tracking Available!</h4>
+            <p>Want feedback on your exercise form? Use our AI-powered exercise detection system to get real-time guidance and automatic rep counting.</p>
+            <p><strong>To get started:</strong> Run <code>python examples/webcam_exercise_demo.py</code> from the Axonsoton directory.</p>
+            <p>See <a href="https://github.com/KRAA5H/Axonsoton/blob/main/SETUP.md#performing-exercises-with-real-time-tracking" target="_blank">SETUP.md</a> for detailed instructions.</p>
+          </div>
+        </div>
+        
+        <!-- Assigned Exercises -->
+        <section class="card">
+          <h3>My Assigned Exercises</h3>
+          <div class="filter-row">
+            <label>
+              <input type="checkbox" id="show-active-only" checked> Show active only
+            </label>
+          </div>
+          <div id="patient-exercises" class="exercise-cards"></div>
+        </section>
+      </div>
+    </div>
+    
+    <!-- Modal for editing assignments -->
+    <div id="edit-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Edit Assignment</h3>
+          <button class="modal-close" id="modal-close">&times;</button>
+        </div>
+        <form id="edit-form">
+          <input type="hidden" id="edit-assignment-id">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-frequency">Frequency</label>
+              <select id="edit-frequency">
+                <option value="daily">Daily</option>
+                <option value="twice_weekly">Twice Weekly</option>
+                <option value="weekly">Weekly</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="edit-repetitions">Repetitions</label>
+              <input type="number" id="edit-repetitions" min="1">
+            </div>
+            
+            <div class="form-group">
+              <label for="edit-sets">Sets</label>
+              <input type="number" id="edit-sets" min="1">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="edit-duration">Duration (minutes)</label>
+            <input type="number" id="edit-duration" min="1">
+          </div>
+          
+          <div class="form-group">
+            <label for="edit-status">Status</label>
+            <select id="edit-status">
+              <option value="active">Active</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="edit-notes">Notes</label>
+            <textarea id="edit-notes" rows="3"></textarea>
+          </div>
+          
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="modal-cancel">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/app.js"></script>
+</body>
+</html>

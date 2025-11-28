@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Recovery Dashboard - Axonsoton</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Fallback check for Chart.js
+        window.addEventListener('load', function() {
+            if (typeof Chart === 'undefined') {
+                document.querySelectorAll('canvas').forEach(function(canvas) {
+                    var fallback = document.createElement('div');
+                    fallback.className = 'chart-fallback';
+                    fallback.innerHTML = '<p style="text-align: center; padding: 40px; color: #636e72;">📊 Chart visualization requires Chart.js library</p>';
+                    canvas.parentNode.insertBefore(fallback, canvas);
+                    canvas.style.display = 'none';
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <h1>Axonsoton</h1>
+            <p class="subtitle">Patient Recovery Dashboard</p>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#overview" class="nav-link active">Overview</a></li>
+                <li><a href="#exercises" class="nav-link">Exercises</a></li>
+                <li><a href="#schedule" class="nav-link">Schedule</a></li>
+                <li><a href="#health-data" class="nav-link">Health Data</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <!-- Patient Info Section -->
+        <section class="patient-info">
+            <div class="patient-card">
+                <div class="patient-avatar">
+                    <span class="avatar-placeholder">JD</span>
+                </div>
+                <div class="patient-details">
+                    <h2 id="patient-name">John Doe</h2>
+                    <p class="patient-id">Patient ID: <span id="patient-id">AX-2024-001</span></p>
+                    <p class="recovery-program">Program: <span id="recovery-program">Upper Limb Rehabilitation</span></p>
+                    <p class="start-date">Started: <span id="start-date">November 1, 2024</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Overview Section -->
+        <section id="overview" class="section overview-section">
+            <h2 class="section-title">Recovery Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🏋️</div>
+                    <div class="stat-value" id="total-reps">1,247</div>
+                    <div class="stat-label">Total Reps</div>
+                    <div class="stat-trend positive">+12% this week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value" id="exercises-completed">156</div>
+                    <div class="stat-label">Sessions Completed</div>
+                    <div class="stat-trend positive">+8% this week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-value" id="total-time">32h 15m</div>
+                    <div class="stat-label">Total Exercise Time</div>
+                    <div class="stat-trend positive">+5% this week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-value" id="adherence-rate">89%</div>
+                    <div class="stat-label">Adherence Rate</div>
+                    <div class="stat-trend neutral">No change</div>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-container">
+                    <h3>Weekly Progress</h3>
+                    <canvas id="weekly-progress-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Recovery Progress</h3>
+                    <canvas id="recovery-progress-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exercises Section -->
+        <section id="exercises" class="section exercises-section">
+            <h2 class="section-title">Exercise Performance</h2>
+            
+            <div class="exercise-filters">
+                <label for="exercise-filter">Filter by Exercise:</label>
+                <select id="exercise-filter">
+                    <option value="all">All Exercises</option>
+                    <option value="wrist-flexion">Wrist Flexion</option>
+                    <option value="finger-extension">Finger Extension</option>
+                    <option value="grip-strength">Grip Strength</option>
+                    <option value="shoulder-rotation">Shoulder Rotation</option>
+                    <option value="elbow-flexion">Elbow Flexion</option>
+                </select>
+                <label for="date-range">Date Range:</label>
+                <select id="date-range">
+                    <option value="7">Last 7 Days</option>
+                    <option value="14">Last 14 Days</option>
+                    <option value="30" selected>Last 30 Days</option>
+                    <option value="90">Last 90 Days</option>
+                </select>
+            </div>
+
+            <div class="exercise-cards">
+                <div class="exercise-card" data-exercise="wrist-flexion">
+                    <div class="exercise-header">
+                        <h3>Wrist Flexion</h3>
+                        <span class="exercise-badge">Upper Limb</span>
+                    </div>
+                    <div class="exercise-stats">
+                        <div class="exercise-stat">
+                            <span class="stat-number">245</span>
+                            <span class="stat-text">Total Reps</span>
+                        </div>
+                        <div class="exercise-stat">
+                            <span class="stat-number">32</span>
+                            <span class="stat-text">Sessions</span>
+                        </div>
+                        <div class="exercise-stat">
+                            <span class="stat-number">7.6</span>
+                            <span class="stat-text">Avg Reps/Session</span>
+                        </div>
+                    </div>
+                    <div class="exercise-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%"></div>
+                        </div>
+                        <span class="progress-text">78% of target</span>
+                    </div>
+                </div>
+
+                <div class="exercise-card" data-exercise="finger-extension">
+                    <div class="exercise-header">
+                        <h3>Finger Extension</h3>
+                        <span class="exercise-badge">Hand</span>
+                    </div>
+                    <div class="exercise-stats">
+                        <div class="exercise-stat">
+                            <span class="stat-number">312</span>
+                            <span class="stat-text">Total Reps</span>
+                        </div>
+                        <div class="exercise-stat">
+                            <span class="stat-number">28</span>
+                            <span class="stat-text">Sessions</span>
+                        </div>
+                        <div class="exercise-stat">
+                            <span class="stat-number">11.1</span>
+                            <span class="stat-text">Avg Reps/Session</span>
+                        </div>
+                    </div>
+                    <div class="exercise-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 92%"></div>
+                        </div>
+                        <span class="progress-text">92% of target</span>
+                    </div>
+                </div>
+
+                <div class="exercise-card" data-exercise="grip-strength">
+                    <div class="exercise-header">
+                        <h3>Grip Strength</h3>
+                        <span class="exercise-badge">Hand</span>
+                    </div>
+                    <div class="exercise-stats">
+                        <div class="exercise-stat">
+                            <span class="stat-number">198</span>
+                            <span class="stat-text">Total Reps</span>
+                        </div>
+                        <div class="exercise-stat">
+                            <span class="stat-number">24</span>
+                            <span class="stat-text">Sessions</span>
+                        </div>
+                        <div class="exercise-stat">
+                            <span class="stat-number">8.3</span>
+                            <span class="stat-text">Avg Reps/Session</span>
+                        </div>
+                    </div>
+                    <div class="exercise-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%"></div>
+                        </div>
+                        <span class="progress-text">65% of target</span>
+                    </div>
+                </div>
+
+                <div class="exercise-card" data-exercise="shoulder-rotation">
+                    <div class="exercise-header">
+                        <h3>Shoulder Rotation</h3>
+                        <span class="exercise-badge">Shoulder</span>
+                    </div>
+                    <div class="exercise-stats">
+                        <div class="exercise-stat">
+                            <span class="stat-number">276</span>
+                            <span class="stat-text">Total Reps</span>
+                        </div>
+                        <div class="exercise-stat">
+                            <span class="stat-number">35</span>
+                            <span class="stat-text">Sessions</span>
+                        </div>
+                        <div class="exercise-stat">
+                            <span class="stat-number">7.9</span>
+                            <span class="stat-text">Avg Reps/Session</span>
+                        </div>
+                    </div>
+                    <div class="exercise-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%"></div>
+                        </div>
+                        <span class="progress-text">85% of target</span>
+                    </div>
+                </div>
+
+                <div class="exercise-card" data-exercise="elbow-flexion">
+                    <div class="exercise-header">
+                        <h3>Elbow Flexion</h3>
+                        <span class="exercise-badge">Arm</span>
+                    </div>
+                    <div class="exercise-stats">
+                        <div class="exercise-stat">
+                            <span class="stat-number">216</span>
+                            <span class="stat-text">Total Reps</span>
+                        </div>
+                        <div class="exercise-stat">
+                            <span class="stat-number">27</span>
+                            <span class="stat-text">Sessions</span>
+                        </div>
+                        <div class="exercise-stat">
+                            <span class="stat-number">8.0</span>
+                            <span class="stat-text">Avg Reps/Session</span>
+                        </div>
+                    </div>
+                    <div class="exercise-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 72%"></div>
+                        </div>
+                        <span class="progress-text">72% of target</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container full-width">
+                <h3>Reps by Exercise Over Time</h3>
+                <canvas id="exercise-reps-chart"></canvas>
+            </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section id="schedule" class="section schedule-section">
+            <h2 class="section-title">Exercise Schedule & Time of Day Analysis</h2>
+            
+            <div class="schedule-grid">
+                <div class="time-distribution">
+                    <h3>Exercise Time Distribution</h3>
+                    <div class="time-slots">
+                        <div class="time-slot">
+                            <div class="time-label">Morning (6am - 12pm)</div>
+                            <div class="time-bar">
+                                <div class="time-bar-fill morning" style="width: 45%"></div>
+                            </div>
+                            <div class="time-value">45%</div>
+                        </div>
+                        <div class="time-slot">
+                            <div class="time-label">Afternoon (12pm - 6pm)</div>
+                            <div class="time-bar">
+                                <div class="time-bar-fill afternoon" style="width: 35%"></div>
+                            </div>
+                            <div class="time-value">35%</div>
+                        </div>
+                        <div class="time-slot">
+                            <div class="time-label">Evening (6pm - 10pm)</div>
+                            <div class="time-bar">
+                                <div class="time-bar-fill evening" style="width: 20%"></div>
+                            </div>
+                            <div class="time-value">20%</div>
+                        </div>
+                    </div>
+                    <canvas id="time-distribution-chart"></canvas>
+                </div>
+
+                <div class="weekly-schedule">
+                    <h3>This Week's Schedule</h3>
+                    <div class="schedule-table">
+                        <div class="schedule-header">
+                            <span>Day</span>
+                            <span>Exercises</span>
+                            <span>Status</span>
+                        </div>
+                        <div class="schedule-row completed">
+                            <span class="day">Monday</span>
+                            <span class="exercises">Wrist Flexion, Grip Strength</span>
+                            <span class="status">✓ Completed</span>
+                        </div>
+                        <div class="schedule-row completed">
+                            <span class="day">Tuesday</span>
+                            <span class="exercises">Finger Extension, Elbow Flexion</span>
+                            <span class="status">✓ Completed</span>
+                        </div>
+                        <div class="schedule-row completed">
+                            <span class="day">Wednesday</span>
+                            <span class="exercises">Shoulder Rotation, Grip Strength</span>
+                            <span class="status">✓ Completed</span>
+                        </div>
+                        <div class="schedule-row current">
+                            <span class="day">Thursday</span>
+                            <span class="exercises">Wrist Flexion, Finger Extension</span>
+                            <span class="status">In Progress</span>
+                        </div>
+                        <div class="schedule-row upcoming">
+                            <span class="day">Friday</span>
+                            <span class="exercises">All Exercises</span>
+                            <span class="status">Upcoming</span>
+                        </div>
+                        <div class="schedule-row rest">
+                            <span class="day">Saturday</span>
+                            <span class="exercises">Rest Day</span>
+                            <span class="status">-</span>
+                        </div>
+                        <div class="schedule-row rest">
+                            <span class="day">Sunday</span>
+                            <span class="exercises">Light Stretching</span>
+                            <span class="status">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container full-width">
+                <h3>Exercise Activity Heatmap</h3>
+                <div id="activity-heatmap" class="heatmap-container"></div>
+            </div>
+        </section>
+
+        <!-- Health Data Integration Section -->
+        <section id="health-data" class="section health-data-section">
+            <h2 class="section-title">Integrated Health Data</h2>
+            
+            <div class="health-integrations">
+                <div class="integration-card connected">
+                    <div class="integration-icon">❤️</div>
+                    <div class="integration-info">
+                        <h4>Apple Health</h4>
+                        <p class="integration-status">Connected</p>
+                        <p class="last-sync">Last sync: 2 hours ago</p>
+                    </div>
+                </div>
+                <div class="integration-card connected">
+                    <div class="integration-icon">⌚</div>
+                    <div class="integration-info">
+                        <h4>Fitbit</h4>
+                        <p class="integration-status">Connected</p>
+                        <p class="last-sync">Last sync: 30 minutes ago</p>
+                    </div>
+                </div>
+                <div class="integration-card">
+                    <div class="integration-icon">🏃</div>
+                    <div class="integration-info">
+                        <h4>Google Fit</h4>
+                        <p class="integration-status">Not Connected</p>
+                        <button class="connect-btn">Connect</button>
+                    </div>
+                </div>
+                <div class="integration-card">
+                    <div class="integration-icon">💪</div>
+                    <div class="integration-info">
+                        <h4>MyFitnessPal</h4>
+                        <p class="integration-status">Not Connected</p>
+                        <button class="connect-btn">Connect</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="health-metrics-grid">
+                <div class="health-metric-card">
+                    <h4>Heart Rate</h4>
+                    <div class="metric-value">
+                        <span class="value">72</span>
+                        <span class="unit">bpm</span>
+                    </div>
+                    <canvas id="heart-rate-chart" class="mini-chart"></canvas>
+                    <div class="metric-range">
+                        <span>Resting: 62-78 bpm</span>
+                        <span>During Exercise: 95-130 bpm</span>
+                    </div>
+                </div>
+
+                <div class="health-metric-card">
+                    <h4>Sleep Quality</h4>
+                    <div class="metric-value">
+                        <span class="value">7.2</span>
+                        <span class="unit">hours avg</span>
+                    </div>
+                    <canvas id="sleep-chart" class="mini-chart"></canvas>
+                    <div class="metric-range">
+                        <span>Deep Sleep: 1.8 hrs</span>
+                        <span>REM: 2.1 hrs</span>
+                    </div>
+                </div>
+
+                <div class="health-metric-card">
+                    <h4>Daily Steps</h4>
+                    <div class="metric-value">
+                        <span class="value">6,847</span>
+                        <span class="unit">steps today</span>
+                    </div>
+                    <canvas id="steps-chart" class="mini-chart"></canvas>
+                    <div class="metric-range">
+                        <span>Goal: 8,000 steps</span>
+                        <span>Weekly Avg: 7,234</span>
+                    </div>
+                </div>
+
+                <div class="health-metric-card">
+                    <h4>Calories Burned</h4>
+                    <div class="metric-value">
+                        <span class="value">1,892</span>
+                        <span class="unit">kcal today</span>
+                    </div>
+                    <canvas id="calories-chart" class="mini-chart"></canvas>
+                    <div class="metric-range">
+                        <span>Exercise: 342 kcal</span>
+                        <span>Resting: 1,550 kcal</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="correlation-analysis">
+                <h3>Recovery Correlation Analysis</h3>
+                <p class="analysis-description">Analyzing how health metrics correlate with exercise performance</p>
+                
+                <div class="correlation-cards">
+                    <div class="correlation-card positive">
+                        <div class="correlation-header">
+                            <span class="correlation-title">Sleep vs Performance</span>
+                            <span class="correlation-value">+0.78</span>
+                        </div>
+                        <p>Better sleep quality correlates with higher exercise performance and more reps completed.</p>
+                    </div>
+                    <div class="correlation-card positive">
+                        <div class="correlation-header">
+                            <span class="correlation-title">Morning Exercise</span>
+                            <span class="correlation-value">+0.62</span>
+                        </div>
+                        <p>Morning exercise sessions show better consistency and higher completion rates.</p>
+                    </div>
+                    <div class="correlation-card neutral">
+                        <div class="correlation-header">
+                            <span class="correlation-title">Steps vs Recovery</span>
+                            <span class="correlation-value">+0.34</span>
+                        </div>
+                        <p>Moderate correlation between daily steps and overall recovery progress.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-container">
+                    <h3>Health Metrics Over Time</h3>
+                    <canvas id="health-metrics-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Performance vs Sleep Quality</h3>
+                    <canvas id="correlation-chart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Axonsoton - Patient Recovery Dashboard</p>
+            <p class="footer-note">Data is securely stored and HIPAA compliant</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
